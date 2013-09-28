@@ -64,7 +64,12 @@ private
     manifest_file = ::File.join(plugins_dir, @current_resource.name, 'META-INF', 'MANIFEST.MF')
     if ::File.exist?(manifest_file)
       manifest = IO.read(manifest_file)
-      current_version = manifest.match(/^Plugin-Version:\s*(.+)$/).strip
+      current_version =
+        if manifest.match(/^Plugin-Version:\s*(.+)$/)
+          $1.strip
+        else
+          ""
+        end
     end
     current_version
   end
