@@ -64,12 +64,7 @@ private
     manifest_file = ::File.join(plugins_dir, @current_resource.name, 'META-INF', 'MANIFEST.MF')
     if ::File.exist?(manifest_file)
       manifest = IO.read(manifest_file)
-      current_version =
-        if manifest.match(/^Plugin-Version:\s*(.+)$/)
-          $1.strip
-        else
-          ""
-        end
+      current_version = manifest.match(/^Plugin-Version:\s*(.+)$/)[1].strip
     end
     current_version
   end
@@ -100,7 +95,7 @@ private
     remote_file plugin_file_path do
       source plugin_url
       owner node['jenkins']['server']['user']
-      group node['jenkins']['server']['group']
+      group node['jenkins']['server']['plugins_dir_group']
       backup false
       action :create
       notifies :restart, 'service[jenkins]'
