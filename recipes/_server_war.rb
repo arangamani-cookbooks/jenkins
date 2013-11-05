@@ -32,8 +32,8 @@ remote_file File.join(node['jenkins']['server']['home'], 'jenkins.war') do
   checksum node['jenkins']['server']['war_checksum'] unless node['jenkins']['server']['war_checksum'].nil?
   owner node['jenkins']['server']['user']
   group node['jenkins']['server']['home_dir_group']
-  notifies :restart, 'service[jenkins]'
-  notifies :create, 'ruby_block[block_until_operational]'
+  notifies :restart, 'service[jenkins]', :immediately
+  notifies :create, 'ruby_block[block_until_operational]', :immediately
 end
 
 runit_service 'jenkins'
